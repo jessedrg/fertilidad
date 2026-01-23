@@ -1,10 +1,8 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useChat } from "@ai-sdk/react"
-import { DefaultChatTransport } from "ai"
 import { ArrowUp } from "lucide-react"
 
 interface HeroSectionProps {
@@ -14,22 +12,23 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ customTitle, customSubtitle, locality }: HeroSectionProps = {}) {
-  const [input, setInput] = useState("")
   const [showWelcomeBubble, setShowWelcomeBubble] = useState(false)
   const [isTypingWelcome, setIsTypingWelcome] = useState(false)
   const [welcomeText, setWelcomeText] = useState("")
   const [leadSent, setLeadSent] = useState(false)
   const [displayedTexts, setDisplayedTexts] = useState<Record<string, string>>({})
+  const [inputValue, setInputValue] = useState("")
+  const [isInputFocused, setIsInputFocused] = useState(false)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement>(null)
 
   const fullWelcomeText = locality 
     ? `Hola, soy del equipo de NATALÍA. Veo que estás buscando tratamiento de fertilidad en ${locality}. ¿Qué tipo de tratamiento te interesa?`
     : "Hola, soy del equipo de NATALÍA. ¿En qué zona de España buscas clínica de fertilidad?"
 
-  const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
-    initialMessages: [],
+  const { messages, isLoading, setMessages } = useChat({
+    api: "/api/chat",
   })
 
   useEffect(() => {
@@ -113,10 +112,10 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
       const currentDisplayed = displayedTexts[message.id] || ""
 
       if (currentDisplayed.length < fullText.length) {
-        const baseSpeed = 60
-        const variation = Math.random() * 40
+        const baseSpeed = 20
+        const variation = Math.random() * 15
         const currentChar = fullText[currentDisplayed.length]
-        const punctuationDelay = [".", ",", "!", "?", ":"].includes(currentChar) ? 150 : 0
+        const punctuationDelay = [".", ",", "!", "?", ":"].includes(currentChar) ? 80 : 0
         const delay = baseSpeed + variation + punctuationDelay
 
         const timeoutId = setTimeout(() => {
@@ -167,7 +166,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
         behavior: "smooth",
       })
     }
-  }, [messages, status, welcomeText, displayedTexts])
+  }, [messages, isLoading, welcomeText, displayedTexts])
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -176,11 +175,46 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
     }
   }, [messages])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Mobile keyboard handling - scroll chat into view when input focused
+  useEffect(() => {
+    if (isInputFocused && chatContainerRef.current) {
+      // Small delay to let the keyboard appear
+      const timeoutId = setTimeout(() => {
+        chatContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+      }, 100)
+      return () => clearTimeout(timeoutId)
+    }
+  }, [isInputFocused])
+
+  const [isSending, setIsSending] = useState(false)
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!input.trim() || status !== "ready") return
-    sendMessage({ text: input })
-    setInput("")
+    if (!inputValue.trim() || isSending) return
+    
+    const userMessage = { id: Date.now().toString(), role: "user" as const, content: inputValue }
+    setMessages((prev) => [...prev, userMessage])
+    setInputValue("")
+    setIsSending(true)
+    
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
+      })
+      
+      if (!response.ok) throw new Error("Chat error")
+      
+      const data = await response.json()
+      const assistantId = (Date.now() + 1).toString()
+      
+      setMessages((prev) => [...prev, { id: assistantId, role: "assistant" as const, content: data.content }])
+    } catch (error) {
+      console.error("[v0] Chat error:", error)
+    } finally {
+      setIsSending(false)
+    }
   }
 
   const getMessageText = (message: (typeof messages)[0]) => {
@@ -197,7 +231,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
   }
 
   const isWaitingForResponse =
-    status === "streaming" && messages.length > 0 && messages[messages.length - 1].role === "user"
+    isSending && messages.length > 0 && messages[messages.length - 1].role === "user"
 
   const isRevealingText = useMemo(() => {
     return messages.some((m) => {
@@ -282,7 +316,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
           </div>
 
           {/* Right column - Chat */}
-          <div className="flex flex-col order-1 lg:order-2 lg:sticky lg:top-8">
+          <div ref={chatContainerRef} className="flex flex-col order-1 lg:order-2 lg:sticky lg:top-8">
             <div className="mb-4 sm:mb-6">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -368,13 +402,15 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="border-t border-border p-3 sm:p-4 flex-shrink-0">
+              <form onSubmit={onSubmit} className="border-t border-border p-3 sm:p-4 flex-shrink-0">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <input
                     ref={inputRef}
                     type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
                     placeholder="Escribe tu mensaje..."
                     className="flex-1 bg-transparent text-base sm:text-sm font-sans placeholder:text-muted-foreground focus:outline-none text-foreground"
                     autoComplete="off"
@@ -384,7 +420,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
                   />
                   <button
                     type="submit"
-                    disabled={!input.trim() || status !== "ready"}
+                    disabled={!inputValue.trim() || isSending}
                     className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-foreground text-background rounded-full disabled:opacity-30 transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-95"
                   >
                     <ArrowUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
