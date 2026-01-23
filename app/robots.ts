@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://www.tufertilidad.com/sitemap-v1.xml",
+    sitemap: "https://www.tufertilidad.xyz/sitemap-v1.xml",
   }
 }

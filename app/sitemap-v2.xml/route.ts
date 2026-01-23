@@ -4,7 +4,7 @@ import { VALID_SERVICES, MODIFIERS, PROBLEMS, CITIES } from "@/lib/sitemap-data"
 export const dynamic = "force-dynamic"
 export const runtime = "nodejs"
 
-const BASE_URL = "https://www.tufertilidad.com"
+const BASE_URL = "https://www.tufertilidad.xyz"
 const MAX_URLS_PER_SITEMAP = 45000
 
 export async function GET() {

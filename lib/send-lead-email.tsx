@@ -56,7 +56,7 @@ ${data.conversacion}
               <!-- Footer -->
               <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #f0e5e0;">
                 <p style="margin: 0; font-size: 11px; color: #b8a090; letter-spacing: 0.5px;">
-                  Lead generado automáticamente desde natalia-fertilidad.es
+                  Lead generado automáticamente desde tufertilidad.xyz
                 </p>
               </div>
             </div>
