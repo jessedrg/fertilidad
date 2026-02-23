@@ -18,7 +18,7 @@ export const metadata: Metadata = {
       "Te ayudamos a encontrar la mejor clínica de fertilidad. Asesoramiento personalizado y gratuito.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://www.naceria.com/og",
         width: 1200,
         height: 630,
         alt: "nacería - Clínicas de fertilidad",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "nacería — Encuentra la clínica de fertilidad perfecta",
     description: "Te ayudamos a encontrar la mejor clínica de fertilidad.",
-    images: ["/og-image.jpg"],
+    images: ["https://www.naceria.com/og"],
   },
   icons: {
     icon: [
