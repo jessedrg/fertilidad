@@ -8,11 +8,11 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ["/api/", "/admin/"],
     },
     sitemap: [
-      "https://www.tufertilidad.xyz/sitemap-1.xml",
-      "https://www.tufertilidad.xyz/sitemap-2.xml",
-      "https://www.tufertilidad.xyz/sitemap-3.xml",
-      "https://www.tufertilidad.xyz/sitemap-4.xml",
-      "https://www.tufertilidad.xyz/sitemap-5.xml",
+      "https://www.naceria.com/sitemap-1.xml",
+      "https://www.naceria.com/sitemap-2.xml",
+      "https://www.naceria.com/sitemap-3.xml",
+      "https://www.naceria.com/sitemap-4.xml",
+      "https://www.naceria.com/sitemap-5.xml",
     ],
   }
 }

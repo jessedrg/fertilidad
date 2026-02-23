@@ -30,8 +30,8 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
   const fullWelcomeText = locality 
-    ? `Hola, soy del equipo de NATALÍA. Veo que estás buscando tratamiento de fertilidad en ${locality}. ¿Qué tipo de tratamiento te interesa?`
-    : "Hola, soy del equipo de NATALÍA. ¿En qué zona de España buscas clínica de fertilidad?"
+    ? `Hola, soy del equipo de nacería. Veo que estás buscando tratamiento de fertilidad en ${locality}. ¿Qué tipo de tratamiento te interesa?`
+    : "Hola, soy del equipo de nacería. ¿En qué zona de España buscas clínica de fertilidad?"
 
   const [messages, setMessages] = useState<Message[]>([])
 
@@ -79,7 +79,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
                   ?.filter((p): p is { type: "text"; text: string } => p.type === "text")
                   .map((p) => p.text)
                   .join("") || ""
-          return `${m.role === "user" ? "Cliente" : "Natalía"}: ${content}`
+          return `${m.role === "user" ? "Cliente" : "nacería"}: ${content}`
         })
         .join("\n\n")
 
@@ -91,7 +91,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
           telefono,
           zona: "Ver conversación",
           tipoAtencion: "Ver conversación",
-          detalles: "Lead capturado via chat NATALÍA Fertilidad",
+          detalles: "Lead capturado via chat nacería Fertilidad",
           conversacion,
         }),
       })
@@ -247,7 +247,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
   return (
     <section className="relative flex flex-col min-h-screen bg-background">
       <header className="flex items-center justify-between px-4 sm:px-6 md:px-12 py-4 sm:py-6 border-b border-border/30">
-        <span className="font-serif text-base sm:text-lg tracking-tight text-foreground">NATALÍA</span>
+        <span className="font-serif text-base sm:text-lg tracking-tight text-foreground">nacería</span>
         <span className="text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-sans text-muted-foreground">
           Tu sueño de ser madre, más cerca
         </span>
@@ -312,7 +312,7 @@ export function HeroSection({ customTitle, customSubtitle, locality }: HeroSecti
                 "Sabemos que el camino hacia la maternidad puede ser difícil. Por eso te acompañamos en cada paso, conectándote con las mejores clínicas."
               </p>
               <cite className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-foreground/60 mt-2 block not-italic font-sans">
-                — Equipo NATALÍA
+                — Equipo nacería
               </cite>
             </blockquote>
           </div>

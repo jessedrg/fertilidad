@@ -14,9 +14,9 @@ interface LeadData {
 export async function sendLeadEmail(data: LeadData) {
   try {
     const result = await resend.emails.send({
-      from: "NATALÍA Fertilidad <leads@upnesttalent.com>",
+      from: "nacería <leads@upnesttalent.com>",
       to: ["jesse@upnesttalent.com"],
-      subject: `🍼 Nuevo Lead NATALÍA FERTILIDAD - ${data.zona || "Sin zona"}`,
+      subject: `🍼 Nuevo Lead nacería - ${data.zona || "Sin zona"}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -29,7 +29,7 @@ export async function sendLeadEmail(data: LeadData) {
             <div style="background-color: #ffffff; border: 1px solid #f0e5e0; padding: 40px;">
               <!-- Header -->
               <div style="border-bottom: 1px solid #f0e5e0; padding-bottom: 24px; margin-bottom: 32px;">
-                <h1 style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.5px; color: #8b5a5a;">NATALÍA</h1>
+                <h1 style="margin: 0; font-size: 24px; font-weight: 400; letter-spacing: -0.5px; color: #8b5a5a;">nacería</h1>
                 <p style="margin: 8px 0 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #b8a090;">Nuevo lead fertilidad</p>
               </div>
               
@@ -56,7 +56,7 @@ ${data.conversacion}
               <!-- Footer -->
               <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #f0e5e0;">
                 <p style="margin: 0; font-size: 11px; color: #b8a090; letter-spacing: 0.5px;">
-                  Lead generado automáticamente desde tufertilidad.xyz
+                  Lead generado automáticamente desde naceria.com
                 </p>
               </div>
             </div>

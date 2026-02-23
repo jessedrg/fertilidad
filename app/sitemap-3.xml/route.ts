@@ -4,7 +4,7 @@ import { VALID_SERVICES, MODIFIERS, PROBLEMS, CITIES } from "@/lib/sitemap-data"
 export const dynamic = "force-dynamic"
 export const runtime = "nodejs"
 
-const BASE_URL = "https://www.tufertilidad.xyz"
+const BASE_URL = "https://www.naceria.com"
 const MAX_URLS_PER_SITEMAP = 45000
 
 // Sitemap 3: Services 5-6 (congelacion-ovulos, tratamiento-fertilidad)

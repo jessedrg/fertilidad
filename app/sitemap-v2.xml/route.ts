@@ -4,7 +4,7 @@ import { VALID_SERVICES, MODIFIERS, PROBLEMS, CITIES } from "@/lib/sitemap-data"
 export const dynamic = "force-dynamic"
 export const runtime = "nodejs"
 
-const BASE_URL = "https://www.tufertilidad.xyz"
+const BASE_URL = "https://www.naceria.com"
 const MAX_URLS_PER_SITEMAP = 45000
 
 export async function GET() {
@@ -12,7 +12,10 @@ export async function GET() {
 
   const sitemaps: string[] = []
 
-  // Sitemaps for each service + modifier
+  // Sitemap for national-level service landing pages (no city)
+  sitemaps.push(`${BASE_URL}/sitemap-files/service-landings.xml`)
+
+  // Sitemaps for each service + modifier (with city)
   for (const service of VALID_SERVICES) {
     for (const modifier of MODIFIERS) {
       const id = modifier ? `${service}${modifier}` : service

@@ -10,13 +10,42 @@ const MAX_URLS_PER_SITEMAP = 45000 // Leave margin
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params
-    const baseUrl = "https://www.tufertilidad.xyz"
+    const baseUrl = "https://www.naceria.com"
     const date = new Date().toISOString().split("T")[0]
     const id = slug.endsWith(".xml") ? slug.slice(0, -4) : slug
 
     const urls: string[] = []
 
-    // Handle chunked necesidad sitemaps: residencias-ancianos-necesidad-1, etc.
+    // Handle service-landings sitemap (national-level pages without city)
+    if (id === "service-landings") {
+      // Base service pages: /clinica-fertilidad/, /fecundacion-in-vitro/, etc.
+      for (const svc of VALID_SERVICES) {
+        urls.push(`${baseUrl}/${svc}/`)
+      }
+      // Service + modifier pages: /clinica-fertilidad-precios/, etc.
+      for (const svc of VALID_SERVICES) {
+        for (const mod of MODIFIERS) {
+          if (mod) {
+            urls.push(`${baseUrl}/${svc}${mod}/`)
+          }
+        }
+      }
+
+      const xmlParts = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ...urls.map(url => `<url><loc>${url}</loc><lastmod>${date}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`),
+        '</urlset>'
+      ]
+      const xml = xmlParts.join('\n')
+
+      return new NextResponse(xml, {
+        status: 200,
+        headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=86400" },
+      })
+    }
+
+    // Handle chunked necesidad sitemaps: clinica-fertilidad-necesidad-1, etc.
     const necesidadMatch = id.match(/^(.+)-necesidad-(\d+)$/)
     if (necesidadMatch) {
       const service = necesidadMatch[1] as Service
