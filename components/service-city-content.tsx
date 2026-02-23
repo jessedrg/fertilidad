@@ -237,51 +237,70 @@ export function ServiceCityContent({
     <>
       {/* Hero CTA */}
       <section className="relative bg-secondary">
-        <div className="px-4 sm:px-6 md:px-12 py-12 sm:py-16 md:py-24 max-w-5xl mx-auto">
-          <nav className="text-xs tracking-wider text-muted-foreground mb-6 font-sans flex items-center gap-1.5">
-            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-            <span>/</span>
-            <span>{serviceName.title}</span>
-            <span>/</span>
-            <span className="text-foreground">{cityName}</span>
-          </nav>
+        <div className="px-4 sm:px-6 md:px-12 py-12 sm:py-16 md:py-24 max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div>
+              <nav className="text-xs tracking-wider text-muted-foreground mb-6 font-sans flex items-center gap-1.5">
+                <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+                <span>/</span>
+                <span>{serviceName.title}</span>
+                <span>/</span>
+                <span className="text-foreground">{cityName}</span>
+              </nav>
 
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl tracking-tight text-foreground text-balance">
-            {pageTitle}
-          </h1>
+              <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl tracking-tight text-foreground text-balance">
+                {pageTitle}
+              </h1>
 
-          <p className="text-base sm:text-lg text-muted-foreground mt-6 max-w-2xl font-sans leading-relaxed">
-            {"Encuentra la mejor clinica de "}
-            {serviceName.singular}
-            {modifierText ? ` ${modifierText.toLowerCase()}` : ""}
-            {` en ${cityName}. Comparamos precios, tasas de exito y opiniones reales. Asesoramiento gratuito y personalizado.`}
-          </p>
+              <p className="text-base sm:text-lg text-muted-foreground mt-6 max-w-2xl font-sans leading-relaxed">
+                {"Encuentra la mejor clinica de "}
+                {serviceName.singular}
+                {modifierText ? ` ${modifierText.toLowerCase()}` : ""}
+                {` en ${cityName}. Comparamos precios, tasas de exito y opiniones reales. Asesoramiento gratuito y personalizado.`}
+              </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 sm:mt-10">
-            <a
-              href={`tel:${PHONE}`}
-              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-sans text-sm sm:text-base font-semibold hover:opacity-90 transition-opacity"
-            >
-              <Phone className="w-4 h-4" />
-              Llama gratis: {PHONE_DISPLAY}
-            </a>
-            <a
-              href="#como-funciona-ciudad"
-              className="inline-flex items-center justify-center gap-2 border-2 border-foreground text-foreground px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-sans text-sm sm:text-base font-semibold hover:bg-foreground hover:text-background transition-colors"
-            >
-              Como funciona
-            </a>
-          </div>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 sm:mt-10">
+                <a
+                  href={`tel:${PHONE}`}
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-sans text-sm sm:text-base font-semibold hover:opacity-90 transition-opacity"
+                >
+                  <Phone className="w-4 h-4" />
+                  Llama gratis: {PHONE_DISPLAY}
+                </a>
+                <a
+                  href="#como-funciona-ciudad"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-foreground text-foreground px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-sans text-sm sm:text-base font-semibold hover:bg-foreground hover:text-background transition-colors"
+                >
+                  Como funciona
+                </a>
+              </div>
 
-          <div className="flex items-center gap-4 mt-8 text-xs sm:text-sm text-muted-foreground font-sans">
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-              ))}
-              <span className="ml-1 font-semibold text-foreground">{avgRating}/5</span>
+              <div className="flex items-center gap-4 mt-8 text-xs sm:text-sm text-muted-foreground font-sans">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                  ))}
+                  <span className="ml-1 font-semibold text-foreground">{avgRating}/5</span>
+                </div>
+                <span className="text-border">|</span>
+                <span>{reviews.length}+ opiniones verificadas</span>
+              </div>
             </div>
-            <span className="text-border">|</span>
-            <span>{reviews.length}+ opiniones verificadas</span>
+
+            <div className="hidden lg:block relative">
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://images.unsplash.com/photo-1607453998774-d533f65dac99?q=80&w=987&auto=format&fit=crop"
+                  alt={`Clinica de ${serviceName.singular} en ${cityName}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/60 to-transparent p-6">
+                  <p className="text-white font-semibold text-lg">+1.200 bebes nacidos</p>
+                  <p className="text-white/70 text-sm">gracias a nuestro asesoramiento</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
